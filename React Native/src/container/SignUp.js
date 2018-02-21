@@ -7,6 +7,7 @@ import { TouchableOpacity, View } from 'react-native';
 import Dashboard from './Dashboard.js';
 import { Actions } from 'react-native-router-flux';
 import Login from './Login';
+import client from './../../feathers';
 import {
   AppRegistry,
   StyleSheet,
@@ -33,20 +34,32 @@ class SignUp extends Component {
     }
   }
 
+  login() {
+    const { email, password } = this.state;
+
+    return client.authenticate({
+      strategy: 'local',
+      email, password
+    }).catch(error => Alert.alert("login "+error));
+  }
   submit() {
     var Name = this.state.Name;
-    var Email = this.state.Email;
-    var Password = this.state.Password;
-    if(Name==''||Email==''||Password==""){
+    var email = this.state.Email;
+    var password = this.state.Password;
+    if(Name==''||email==''||password==""){
       Alert.alert("Please fill all requirements")
     }
     else{
-    Details={
-     Name :Name,
-     Email :Email,
-     Password :Password,
-    }
-    store.dispatch(MiddlewareAuthentication.asyncSignup(Details));
+      return client.service('users')
+      .create({ email, password })
+      .then((res) => Alert.alert("submit then ",res))
+      .catch((err)=>Alert.alert("submit ",err))
+    // Details={
+    //  Name :Name,
+    //  Email :Email,
+    //  Password :Password,
+    // }
+    // store.dispatch(MiddlewareAuthentication.asyncSignup(Details));
     // if(this.props.isSignin==true){
     //   Actions.Dashboard();
     //   this.props.isSignin=false;
@@ -79,7 +92,7 @@ class SignUp extends Component {
         <Container style={{backgroundColor:'#222222cf'}}>
         <ScrollView>
           {this.state.mode=='verticle'?    
-            <Image  style={{borderRadius:70,height:110,width:110,top:'10%',left:'33%',zIndex:10}} source={require('../Images/logo.png')} />
+            <Image  style={{borderRadius:70,height:80,width:80,top:'10%',left:'40%',zIndex:10}} source={require('../Images/logo.png')} />
            :  <Image  style={{borderRadius:70,height:110,width:110,top:'12%',left:'40%',zIndex:10}} source={require('../Images/logo.png')} />
           }
         <Content style={styles.container}>

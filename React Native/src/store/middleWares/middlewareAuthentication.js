@@ -2,46 +2,13 @@ import { Alert, AsyncStorage } from 'react-native';
 import ActionAuthentication from "./../actions/actionAuthentication.js";
 import { Actions } from 'react-native-router-flux';
 import Dashboard from './../../container/Dashboard.js';
-import io from 'socket.io-client';
-import feathers from 'feathers/client'
-import hooks from 'feathers-hooks';
-import socketio from 'feathers-socketio/client'
-import authentication from 'feathers-authentication-client';
-const PLACEHOLDER = 'https://raw.githubusercontent.com/feathersjs/feathers-chat/master/public/placeholder.png';
-const API_URL = 'http://localhost:3030';
 
+import client from './../../../feathers';
 
 //Update in counter 13 -- create Middleware
 export default class MiddlewareSignup {
     constructor() {
-        const options = { transports: ['websocket'], pingTimeout: 3000, pingInterval: 5000 };
-        const socket = io(API_URL, options);
-
-        this.app = feathers()
-            .configure(socketio(socket))
-            .configure(hooks())
-            .configure(authentication({
-                storage: AsyncStorage // To store our accessToken
-            }));
     }
-    // connect() {
-    //     this.isConnecting = true;
-
-    //     this.app.io.on('connect', () => {
-    //         this.isConnecting = false;
-
-    //         this.authenticate().then(() => {
-    //             console.log('authenticated after reconnection');
-    //         }).catch(error => {
-    //             console.log('error authenticating after reconnection', error);
-    //         });
-    //     });
-
-    //     this.app.io.on('disconnect', () => {
-    //         console.log('disconnected');
-    //         this.isConnecting = true;
-    //     });
-    // }
     static asyncSignup(detail) {
         var email = detail.Email
         var password = detail.Password

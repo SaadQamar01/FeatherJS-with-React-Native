@@ -3,6 +3,8 @@ import { Actions } from 'react-native-router-flux';
 import { BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import store from './../store/index.js';
+import client from './../../feathers';
+
 import {
     Container, Header, Title, Content, Footer, FooterTab, Icon,
     List, ListItem, Left, Right, Body, Fab, Tab, Tabs, TabHeading, Badge
@@ -43,6 +45,7 @@ class Dashboard extends Component {
         }
     }
     logout() {
+        client.logout()
         Actions.Login()
     }
     addTodo() {

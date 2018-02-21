@@ -5,6 +5,7 @@ import store from './src/store/index.js';
 import SignUp from './src/container/SignUp.js'
 import Login from './src/container/Login.js';
 import Dashboard from './src/container/Dashboard.js'
+import Application from './src/container/Application.js'
 // import MiddlewareSignup from './src/store/middleWares/middlewareSignup.js';
 import { Router, Scene } from 'react-native-router-flux';
 import { Provider } from 'react-redux';
@@ -18,7 +19,7 @@ import {
   Text,
   TabIcon
 } from 'react-native';
-export default class App extends Component<{}> {
+export default class App extends Component {
   render() {
     return (
       // <View>
@@ -28,11 +29,17 @@ export default class App extends Component<{}> {
       <Router navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} 
         barButtonTextStyle={styles.barButtonTextStyle} barButtonIconStyle={styles.barButtonIconStyle}>
           <Scene headerTintColor="#fff" key="root" leftButtonIconStyle = {{ tintColor:'#fff'}}>
+            <Scene key="Application"
+              component={Application}
+              // title="Tourist Guide"
+              hideNavBar
+              initial
+              />
             <Scene key="Login"
               component={Login}
               // title="Tourist Guide"
               hideNavBar
-              initial
+              // initial
               />
             <Scene
               key="SignUp"
