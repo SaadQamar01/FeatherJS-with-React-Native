@@ -66,22 +66,22 @@ class Login extends Component {
   //   store.dispatch(MiddlewareAuthentication.loadComponent());
   // }
   login() {
-    var email = this.state.Email;
-    var password = this.state.Password;
-    if (email == '' || password == '') {
-      Alert.alert("Please Fill Email & Password")
-    }
-    else {
-      client.authenticate({
-        strategy: 'local',
-        email, password
-      }).catch(error => this.setState({ error }));
-      // Details = {
-      //   Email: userEmail,
-      //   Password: userPassword,
-      // }
-      // store.dispatch(MiddlewareAuthentication.asyncLogin(Details));
-    }
+    // var email = this.state.Email;
+    // var password = this.state.Password;
+    // if (email == '' || password == '') {
+    //   Alert.alert("Please Fill Email & Password")
+    // }
+    // else {
+    //   client.authenticate({
+    //     strategy: 'local',
+    //     email, password
+    //   }).catch(error => this.setState({ error }));
+    //   // Details = {
+    //   //   Email: userEmail,
+    //   //   Password: userPassword,
+    //   // }
+    //   // store.dispatch(MiddlewareAuthentication.asyncLogin(Details));
+    // }
   }
 
   render() {

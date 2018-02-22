@@ -3,7 +3,7 @@ import ActionAuthentication from "./../actions/actionAuthentication.js";
 import { Actions } from 'react-native-router-flux';
 import Dashboard from './../../container/Dashboard.js';
 
-import client from './../../../feathers';
+// import client from './../../../feathers';
 
 //Update in counter 13 -- create Middleware
 export default class MiddlewareSignup {

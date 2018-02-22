@@ -35,12 +35,12 @@ class SignUp extends Component {
   }
 
   login() {
-    const { email, password } = this.state;
+    // const { email, password } = this.state;
 
-    return client.authenticate({
-      strategy: 'local',
-      email, password
-    }).catch(error => Alert.alert("login "+error));
+    // return client.authenticate({
+    //   strategy: 'local',
+    //   email, password
+    // }).catch(error => Alert.alert("login "+error));
   }
   submit() {
     var Name = this.state.Name;
