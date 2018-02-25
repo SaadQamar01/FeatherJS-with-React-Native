@@ -16,11 +16,12 @@ export default class Todoitem extends Component {
   render() {
     return (
       <View style={styles.list} key={this.props.keyval}>
-        <Text style={styles.todoList}>{this.props.val.date}</Text>
-        <Text style={styles.todoList}>{this.props.val.note}</Text>
-        <TouchableOpacity style={styles.deleteList} onPress={this.props.deleteMethod}>
+        <Text style={styles.todoList}><Text>Date: </Text>{this.props.val.createdAt}</Text>
+        <Text style={styles.todoList}><Text>Avi tag: </Text>{this.props.val.AVI_tag}</Text>
+        <Text style={styles.todoList}><Text>Controller: </Text>{this.props.val.controller+" "}{this.props.val.lane_name}</Text>
+        {/* <TouchableOpacity style={styles.deleteList} onPress={this.props.deleteMethod}>
         <Text style={styles.deleteListText}>D</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     )
   }
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     list:{
         position:'relative',
         padding:20,
-        paddingRight:100,
+        paddingRight:50,
         borderBottomWidth:2,
         borderBottomColor:'#ededed' 
     },

@@ -3,7 +3,7 @@ import { Actions } from 'react-native-router-flux';
 import { BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import store from './../store/index.js';
-// import client from './../../feathers';
+import client from './../../feathers';
 
 import {
     Container, Header, Title, Content, Footer, FooterTab, Icon,
@@ -18,7 +18,8 @@ import {
     TouchableOpacity,
     TextInput
 } from 'react-native';
-import Todoitem from './../components/Node.js'
+import Todoitem from './../components/Node.js';
+import TransactionForm from './../components/Form.js';
 const windowSize = require('Dimensions').get('window')
 const deviceWidth = windowSize.width;
 const deviceHeight = windowSize.height;
@@ -40,33 +41,43 @@ class Dashboard extends Component {
     constructor() {
         super();
         this.state = {
-            noteArray: [],
+            allData: [],
             noteText: ''
         }
     }
+    componentWillMount(){
+       var allData = client.service('avi-data')
+       allData.find()
+        .then(response => {console.log(response.data);this.setState({allData:response.data})})
+        .catch(err=>console.log(err))
+        allData.on('created', data => this.setState({
+            allData: this.state.allData.concat(data)
+          }));
+    }
     logout() {
-        // client.logout()
-        Actions.Login()
+        client.logout();
+        Actions.Login();
     }
     addTodo() {
-        if (this.state.noteText) {
-            var d = new Date();
-            this.state.noteArray.push({ 'date': d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + (d.getDate()), 'note': this.state.noteText })
-            this.setState({ noteArray: this.state.noteArray })
-            this.setState({ noteText: '' });
-        }
+        // if (this.state.noteText) {
+        //     var d = new Date();
+        //     this.state.noteArray.push({ 'date': d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + (d.getDate()), 'note': this.state.noteText })
+        //     this.setState({ noteArray: this.state.noteArray })
+        //     this.setState({ noteText: '' });
+        // }
+
     }
-    deleteNote(key) {
-        this.state.noteArray.splice(key, 1);
-        this.setState({ noteArray: this.state.noteArray });
-    }
+    // deleteNote(key) {
+    //     this.state.allData.splice(key, 1);
+    //     this.setState({ noteArray: this.state.noteArray });
+    // }
     render() {
-        let notes = this.state.noteArray.map((val, key) => {
+        let notes = this.state.allData.map((val, key) => {
             return <Todoitem key={key} keyval={key} val={val} deleteMethod={() => this.deleteNote(key)} />
         });
         return (
             <View style={styles.container}>
-                <Header style={{ backgroundColor: '#E91E63', color: "#fff", borderBottomWidth: 10, borderBottomColor: '#ddd', height: 90 }}>
+                <Header style={{ backgroundColor: '#E91E63', borderBottomWidth: 10, borderBottomColor: '#ddd', height: 90 }}>
                     <Body style={{}}>
                         <Title>FeatherJS</Title>
                     </Body>
@@ -80,10 +91,10 @@ class Dashboard extends Component {
                     {notes}
                 </ScrollView>
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.addButton} onPress={this.addTodo.bind(this)}>
+                    <TouchableOpacity style={styles.addButton} onPress={()=> Actions.TransactionForm()}>
                         <Text style={styles.addButtonText}>+</Text>
                     </TouchableOpacity>
-                    <TextInput onChangeText={(noteText) => this.setState({ noteText })} value={this.state.noteText} style={styles.textInput} ref="list" placeholder="Add Something" placeholderTextColor="white" underlineColorAndroid="transparent"></TextInput>
+                    <Text style={styles.textInput}></Text>               
                 </View>
             </View>
         )
@@ -129,7 +140,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 10,
-        marginBottom: -50,
+        marginBottom: -55,
         zIndex: 10
     },
     addButtonText: {

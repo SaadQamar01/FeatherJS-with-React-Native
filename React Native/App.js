@@ -6,6 +6,7 @@ import SignUp from './src/container/SignUp.js'
 import Login from './src/container/Login.js';
 import Dashboard from './src/container/Dashboard.js'
 import Application from './src/container/Application.js'
+import TransactionForm from './src/components/Form.js'
 // import MiddlewareSignup from './src/store/middleWares/middlewareSignup.js';
 import { Router, Scene } from 'react-native-router-flux';
 import { Provider } from 'react-redux';
@@ -33,7 +34,7 @@ export default class App extends Component {
               component={Application}
               // title="Tourist Guide"
               hideNavBar
-              initial
+              // initial
               />
             <Scene key="Login"
               component={Login}
@@ -52,7 +53,12 @@ export default class App extends Component {
               component={Dashboard}
               // title="Tourist Guide"
               hideNavBar
-              // initial
+              initial
+              />
+            <Scene
+              key="TransactionForm"
+              component={TransactionForm}
+              hideNavBar
               />
           </Scene>
         </Router>

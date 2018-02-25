@@ -34,40 +34,45 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      Email: '',
-      Password: '',
+      email: '',
+      password: '',
       mode: (Dimensions.get('window').width < Dimensions.get('window').height) ? 'verticle' : 'horizontal'
     }
   }
-  componentWillMount() {
-    Dimensions.addEventListener('change', () =>
-      this.setState({ mode: (Dimensions.get('window').width < Dimensions.get('window').height) ? 'verticle' : 'horizontal' }));
-    BackHandler.addEventListener('backPress', this.handleBackButton);
-  }
-  componentWillUnmount() {
-    Dimensions.removeEventListener('change', () =>
-      this.setState({ mode: (Dimensions.get('window').width < Dimensions.get('window').height) ? 'verticle' : 'horizontal' }));
-
-    BackHandler.removeEventListener('backPress', false);
-  }
-  handleBackButton() {
-    try {
-      // alert(Actions.currentRouter.currentRoute);
-      Actions.home();
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }
-  changeDimensions() {
-    this.setState({ istrue: false })
-  }
-  // componentDidMount() {
-  //   store.dispatch(MiddlewareAuthentication.loadComponent());
+  // componentWillMount() {
+  //   Dimensions.addEventListener('change', () =>
+  //     this.setState({ mode: (Dimensions.get('window').width < Dimensions.get('window').height) ? 'verticle' : 'horizontal' }));
+  //   BackHandler.addEventListener('backPress', this.handleBackButton);
   // }
-  login() {
+  // componentWillUnmount() {
+  //   Dimensions.removeEventListener('change', () =>
+  //     this.setState({ mode: (Dimensions.get('window').width < Dimensions.get('window').height) ? 'verticle' : 'horizontal' }));
+
+  //   BackHandler.removeEventListener('backPress', false);
+  // }
+  // handleBackButton() {
+  //   try {
+  //     // alert(Actions.currentRouter.currentRoute);
+  //     Actions.home();
+  //     return true;
+  //   } catch (err) {
+  //     return false;
+  //   }
+  // }
+  // changeDimensions() {
+  //   this.setState({ istrue: false })
+  // }
+  componentWillMount() {
+    client.authenticate().catch((err) => console.log(err));
+    client.on('authenticated', login => {
+      console.log(login);
+      Actions.Dashboard();
+    });
+    // store.dispatch(MiddlewareAuthentication.loadComponent());
+  }
+  // login() {
     // var email = this.state.Email;
-    // var password = this.state.Password;
+    // var password = this.state.Passdword;
     // if (email == '' || password == '') {
     //   Alert.alert("Please Fill Email & Password")
     // }
@@ -82,8 +87,26 @@ class Login extends Component {
     //   // }
     //   // store.dispatch(MiddlewareAuthentication.asyncLogin(Details));
     // }
+  // }
+  login() {
+    const { email, password } = this.state;
+    console.log(email,password)
+     client.authenticate({
+      strategy: 'local', 
+      email, 
+      password
+    }).then(response => {
+      console.log(response)
+      this.setState({email:'',password:''})
+      return client.passport.verifyJWT(response.accessToken)
+    })
+    .then(payload => {
+      console.log(payload) 
+      return client.service('users').get(payload.userId)
+        .then(user => {Actions.Dashboard(); console.log("authentication success"); console.log(user) })
+    })
+      .catch(error => console.log(error));
   }
-
   render() {
     return (
       // <ImageBackgroud source={require('../Images/bg2.jpg')}
@@ -99,11 +122,11 @@ class Login extends Component {
             <Form>
               <Item floatingLabel>
                 <Label style={{ marginLeft: 10 }}>Email:</Label>
-                <Input onChangeText={(Email) => this.setState({ Email })} />
+                <Input onChangeText={(email) => this.setState({ email })} />
               </Item>
               <Item floatingLabel>
                 <Label style={{ marginLeft: 10 }}>Password:</Label>
-                <Input secureTextEntry={true} password={true} onChangeText={(Password) => this.setState({ Password })} />
+                <Input secureTextEntry={true} password={true} onChangeText={(password) => this.setState({ password })} />
               </Item>
               <Button active full onPress={this.login.bind(this)} style={styles.login}>
                 <Text style={{ fontWeight: 'normal', color: 'white' }}>Login</Text>
